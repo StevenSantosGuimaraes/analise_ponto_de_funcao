@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador APF</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'project_list' %}">Gerenciador APF</a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="{% url 'project_create' %}">Novo Projeto</a>
+            </div>
+            <button id="theme-toggle" class="btn btn-outline-secondary ms-auto" type="button" title="Alternar tema">
+                <span id="theme-icon">🌙</span>
+            </button>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        {% include '_messages.html' %}
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Alternância de tema light/night
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        function setTheme(night) {
+            if (night) {
+                document.body.classList.add('night-mode');
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'night');
+            } else {
+                document.body.classList.remove('night-mode');
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        themeToggle.addEventListener('click', () => {
+            setTheme(!document.body.classList.contains('night-mode'));
+        });
+        // Carregar preferência do usuário
+        if (localStorage.getItem('theme') === 'night') {
+            setTheme(true);
+        }
+    </script>
+</body>
+
+</html>

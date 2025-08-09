@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+<h1>{{ object.nome }}</h1>
+<p>{{ object.descricao }}</p>
+
+<h3>Componentes Funcionais</h3>
+<p><em>Nota: Componentes são classificados em Entrada Externa (EE), Saída Externa (SE), Consulta Externa (CE), Arquivo
+        Lógico Interno (ALI) e Arquivo de Interface Externa (AIE). Adicione-os com base nas funcionalidades do
+        sistema.</em></p>
+<a href="{% url 'component_create' object.id %}" class="btn btn-primary mb-3">Adicionar Componente</a>
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Complexidade</th>
+            <th>Quantidade</th>
+            <th>Descrição</th>
+            <th>Pontos</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for componente in componentes %}
+        <tr>
+            <td>{{ componente.get_tipo_componente_display }}</td>
+            <td>{{ componente.get_complexidade_display }}</td>
+            <td>{{ componente.quantidade }}</td>
+            <td>{{ componente.descricao }}</td>
+            <td>{{ componente.calcular_pontos }}</td>
+            <td>
+                <a href="{% url 'component_edit' componente.id %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'component_delete' componente.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja remover este ponto de função?');">Remover</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Nenhum componente cadastrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Fator de Ajuste</h3>
+<p><em>Nota: O Fator de Ajuste (VAF) é calculado com base em 14 características gerais, cada uma com valor de 0 a 5.
+        Defina os valores para ajustar os Pontos de Função.</em></p>
+{% if object.fatorajuste_set.exists %}
+<p>VAF: {{ vaf|floatformat:2 }}</p>
+{% else %}
+<a href="{% url 'adjustment_create' object.id %}" class="btn btn-primary mb-3">Definir Fator de Ajuste</a>
+{% endif %}
+
+<h3>Resultados</h3>
+{% if erro %}
+<div class="alert alert-danger">{{ erro }}</div>
+{% else %}
+<p>Pontos de Função Não Ajustados (PFNA): {{ pfna }}</p>
+<p>Pontos de Função Ajustados: {{ pf_ajustado|floatformat:2 }}</p>
+
+
+<div class="d-flex align-items-center mb-3">
+    <form method="get" class="flex-grow-1 mr-2">
+        <div class="form-group mb-0">
+            <label for="linguagem">Selecione a linguagem para estimar esforço/custo:</label>
+            <select name="linguagem" id="linguagem" class="form-control" onchange="this.form.submit()">
+                <option value="">-- Escolha uma linguagem --</option>
+                {% for linguagem in linguagens %}
+                    <option value="{{ linguagem.id }}" {% if linguagem_selecionada and linguagem.id == linguagem_selecionada.id %}selected{% endif %}>{{ linguagem.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+    <a href="{% url 'linguagem_list' %}" class="btn btn-secondary ml-2">Gerenciar Linguagens</a>
+</div>
+
+{% if estimativa %}
+<div class="card card-body bg-light mb-3">
+    <h5>Estimativa para {{ estimativa.linguagem.nome }}</h5>
+    <ul>
+        <li>Dias estimados: {{ estimativa.dias|floatformat:2 }}</li>
+        <li>Horas estimadas: {{ estimativa.horas|floatformat:2 }}</li>
+        <li>Custo total: R$ {{ estimativa.custo|floatformat:2 }}</li>
+    </ul>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

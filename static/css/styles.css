@@ -1,0 +1,48 @@
+/* Paleta de cores com suporte a light e night mode */
+:root {
+    --bg-color: #f8f9fa;
+    --text-color: #222;
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --card-bg: #fff;
+    --border-color: #dee2e6;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.card, .table, .form-control, .btn, .alert {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+}
+
+/* Night mode */
+.night-mode {
+    --bg-color: #181a1b;
+    --text-color: #e0e0e0;
+    --primary-color: #0d6efd;
+    --secondary-color: #adb5bd;
+    --card-bg: #23272b;
+    --border-color: #343a40;
+}
+
+.night-mode .navbar, .night-mode .navbar-brand, .night-mode .nav-link {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+}
+
+.night-mode .btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.night-mode .btn-secondary {
+    background-color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+<h1>Definir Fator de Ajuste</h1>
+<p><em>Nota: Atribua valores de 0 (sem influência) a 5 (forte influência) para cada característica geral. Isso ajustará
+        os Pontos de Função conforme o impacto do ambiente.</em></p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a href="{% url 'project_detail' project_id %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

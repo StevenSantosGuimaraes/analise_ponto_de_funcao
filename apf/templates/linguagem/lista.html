@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Linguagens</h1>
+<a href="{% url 'linguagem_create' %}" class="btn btn-primary mb-3">Nova Linguagem</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Produtividade (PF/dia)</th>
+            <th>Custo/hora (R$)</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for linguagem in object_list %}
+        <tr>
+            <td>{{ linguagem.nome }}</td>
+            <td>{{ linguagem.produtividade }}</td>
+            <td>{{ linguagem.custo_hora }}</td>
+            <td>
+                <a href="{% url 'linguagem_edit' linguagem.id %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'linguagem_delete' linguagem.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja remover esta linguagem?');">Remover</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">Nenhuma linguagem cadastrada.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

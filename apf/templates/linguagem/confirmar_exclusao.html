@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Remover Linguagem</h1>
+<p>Tem certeza que deseja remover a linguagem <strong>{{ object.nome }}</strong>?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Remover</button>
+    <a href="{% url 'linguagem_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

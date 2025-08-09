@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+<h1>Pontos de Função</h1>
+<a href="{% url 'component_create' project_id %}" class="btn btn-primary mb-3">Adicionar Ponto de Função</a>
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Complexidade</th>
+            <th>Quantidade</th>
+            <th>Descrição</th>
+            <th>Pontos</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ponto in pontos_funcao %}
+        <tr>
+            <td>{{ ponto.get_tipo_componente_display }}</td>
+            <td>{{ ponto.get_complexidade_display }}</td>
+            <td>{{ ponto.quantidade }}</td>
+            <td>{{ ponto.descricao }}</td>
+            <td>{{ ponto.calcular_pontos }}</td>
+            <td>
+                <a href="{% url 'component_edit' ponto.id %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'component_delete' ponto.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja remover este ponto de função?');">Remover</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Nenhum ponto de função cadastrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
